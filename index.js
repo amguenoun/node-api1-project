@@ -15,6 +15,14 @@ server.get('/api/users', (req, res) => {
         .catch((err) => res.json("Error on db"))
 });
 
+
+server.get('/api/users/:id', (req, res) => {
+    const userId = req.params.id;
+    db.findById(userId)
+        .then((data) => res.json(data))
+        .catch((err) => res.json("Error on db"))
+});
+
 server.listen(port, () => {
     console.log(`Listening on port ${port}`);
 })
