@@ -25,9 +25,14 @@ server.get('/api/users/:id', (req, res) => {
 
 server.post('/api/users', (req, res) => {
     const user = req.body;
+
+    if (user.name === undefined || user.bio === undefined) {
+        res.status(400).json({ errorMessage: "Please provide name and bio for the user." });
+    }
+
     db.insert(user)
-        .then((data) => res.json({ ...user, ...data }))
-        .catch((err) => res.json("Error on db"))
+        .then((data) => res.status(201).json({ ...user, ...data }))
+        .catch((err) => res.status(500).json({ error: "There was an error while saving the user to the database" }))
 });
 
 server.put('/api/users/:id', (req, res) => {
