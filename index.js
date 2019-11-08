@@ -30,6 +30,22 @@ server.post('/api/users', (req, res) => {
         .catch((err) => res.json("Error on db"))
 });
 
+server.put('/api/users/:id', (req, res) => {
+    const userId = req.params.id;
+    const user = req.body;
+    db.update(userId, user)
+        .then((data) => res.json(data))
+        .catch((err) => res.json("Error on db"))
+});
+
+server.delete('/api/users/:id', (req, res) => {
+    const userId = req.params.id;
+    db.remove(userId)
+        .then((data) => res.json("Delete successful"))
+        .catch((err) => res.json("Error on db"))
+});
+
+
 server.listen(port, () => {
     console.log(`Listening on port ${port}`);
 })
