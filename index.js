@@ -12,15 +12,21 @@ server.use(express.json());
 server.get('/api/users', (req, res) => {
     db.find()
         .then((data) => res.json(data))
-        .catch((err) => res.json("Error on db"))
+        .catch((err) => res.status(500).json({ error: "The users information could not be retrieved." }))
 });
 
 
 server.get('/api/users/:id', (req, res) => {
     const userId = req.params.id;
     db.findById(userId)
-        .then((data) => res.json(data))
-        .catch((err) => res.json("Error on db"))
+        .then((data) => {
+            if (data === undefined) {
+                res.status(404).json({ message: "The user with the specified ID does not exist." })
+            } else {
+                res.json(data)
+            }
+        })
+        .catch((err) => res.status(500).json({ error: "The user information could not be retrieved." }))
 });
 
 server.post('/api/users', (req, res) => {
