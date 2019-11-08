@@ -23,6 +23,13 @@ server.get('/api/users/:id', (req, res) => {
         .catch((err) => res.json("Error on db"))
 });
 
+server.post('/api/users', (req, res) => {
+    const user = req.body;
+    db.insert(user)
+        .then((data) => res.json({ ...user, ...data }))
+        .catch((err) => res.json("Error on db"))
+});
+
 server.listen(port, () => {
     console.log(`Listening on port ${port}`);
 })
